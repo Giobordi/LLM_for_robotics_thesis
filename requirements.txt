@@ -1,0 +1,9 @@
+langchain==0.1.16
+langchain_community==0.0.34
+langchain_openai==0.1.3
+langchainhub==0.1.15  ##useful to versioning prompts
+
+
+#utils
+pyyaml
+
