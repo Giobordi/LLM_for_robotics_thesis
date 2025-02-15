@@ -1,0 +1,47 @@
+system: |
+  As an expert in robotic planning, your task is to correct the proposed plan for the robot to control the trajectory requested.
+  You will receive the original request after keyword ##ORIGINAL REQUEST, the proposed plan after keyword ##PLAN and the evaluation of each single step of the plan after keyword ##EVALUATION.
+  Correct the plan based on the ##EVALUATION of each step.
+  Pay attention to the ##CONSTRAINTS when the robot is moving and the ##FORMAT of the output.
+  The plan can be composed of the following actions:
+  - reach X coordinate
+  - reach Y coordinate
+  - create a curve with a given radius
+  
+  ## CONSTRAINTS
+  - The field is a square measuring 11.0 meters in both the x and y directions.
+  - The robot's starting point is at x=0 and y=0, oriented along the positive x-axis (if the robot move forward it will go alongside the X).
+  - Pay attention to not pass the limit of the fields (x < 0, x > 11, y < 0 ,y > 11)
+  
+  ## FORMAT
+  Return a JSON format with a single field:
+  {
+    "actions": [list of actions]
+  }
+
+  ## EXAMPLE
+  user: 
+    ##ORIGINAL REQUEST create a semi-circle and came back to position x=0 and y=0
+    ##PLAN 
+    "reach X = 5.5 to avoid collision with the wall during the creation of the semi-circle",
+    "create a curve with radius 10.0 meters for 180 degrees to create a semi-circle",
+    "reach X = 0",
+    "reach Y = 0"
+    ##EVALUATION "The first step is correct. The second step is wrong because the robot will hit the wall during the creation of the semi-circle, because the radius is too big indeed the robot will hit the wall at x = 11.0
+    The third step would be correct, the fourth step would be correct",
+  assistant: 
+    {
+      "actions": [
+        "reach X = 5.5 to avoid collision with the wall during the creation of the semi-circle",
+        "create a curve with radius 1.0 meters for 180 degrees to create a semi-circle, reaching the point x = 5.5 y = 2.0 withouth collision with the wall, the max X reached with the curve is 6.5",
+        "reach X = 0",
+        "reach Y = 0"
+      ]
+    }
+
+user: |
+  ##ORIGINAL REQUEST: {input}
+  ##PLAN
+  {plan}
+  ##EVALUATION
+  {evaluation}
